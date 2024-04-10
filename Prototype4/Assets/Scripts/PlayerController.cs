@@ -1,34 +1,35 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody playerRb;
-    public float speed = 5.0f;
+    [Serialize Field] private float speed = 5.0f;
     public GameObject focalPoint;
     public bool hasPowerup;
     private float powerUpStrength = 15.0f;
     public GameObject powerupIndicator;
-
+    private const string FocalPoint = "Focal point";
+    private const string Vertical = "Vertical";
+    private const string Powerup = "Powerup";
+    private const string Enemy = "Enemy";
     // Start is called before the first frame update
     void Start()
     {
         playerRb = GetComponent<Rigidbody>();
-        focalPoint = GameObject.Find("Focal Point");
+        focalPoint = GameObject.Find(FocalPoint);
     }
 
     // Update is called once per frame
     void Update()
     {
         powerupIndicator.transform.position = transform.position + new Vector3(0, -0.5f, 0);
-        float verticalInput = Input.GetAxis("Vertical");
-        playerRb.AddForce(focalPoint.transform.forward * speed * verticalInput);
+        float verticalInput = Input.GetAxis(Vertical);
+        playerRb.AddForce(focalPoint.transform.forward * (speed * verticalInput));
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Powerup"))
+        if (other.CompareTag(Powerup))
         {
             powerupIndicator.SetActive(true);   //
             hasPowerup = true;
@@ -46,7 +47,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Enemy") && hasPowerup)
+        if (collision.gameObject.CompareTag(Enemy) && hasPowerup)
         {
             Rigidbody enemyRigidbody = collision.gameObject.GetComponent<Rigidbody>();
             Vector3 awayfromPlayer = (collision.gameObject.transform.position - transform.position);
