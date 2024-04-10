@@ -13,6 +13,7 @@ public class Target : MonoBehaviour
     private GameManager gameManager;
     public int pointValue = 5;
     public ParticleSystem explosionParticle;
+    private const string Bad = "Bad";
     // Start is called before the first frame update
     void Start()
     {
@@ -43,11 +44,7 @@ public class Target : MonoBehaviour
     {
         return new Vector3(Random.Range(-xRange, xRange), ySpawn, 0.0f);
     }
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
     //player clicks
     private void OnMouseDown()
     {
@@ -62,7 +59,7 @@ public class Target : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Destroy(gameObject);
-        if (!gameObject.CompareTag("Bad"))
+        if (!gameObject.CompareTag(Bad))
         {
             GameObject.FindObjectOfType<GameManager>().GameOver();
         }
